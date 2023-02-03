@@ -4,6 +4,16 @@ variable "region" {
     default = "us-east-1"
 }
 
+variable "access_key" {
+  description = "aws access key"
+  type = string
+}
+
+variable "secret_key" {
+  description = "aws secret key"
+  type = string
+}
+
 variable "cluster_name" {
     description = "eks cluster name"
     type = string
