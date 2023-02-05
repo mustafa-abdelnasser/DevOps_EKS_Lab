@@ -19,10 +19,8 @@ resource "aws_subnet" "vpc_public_subnets" {
     vpc_id = aws_vpc.vpc.id
     cidr_block = each.value["cidr"]
     availability_zone = each.value["az"]
-    tags = {
-        Name = "${var.vpc_name}-${each.key}"
-        network = "public"
-    }
+
+    tags = "${merge({Name = "${var.vpc_name}-${each.key}"},var.public_subnets_tags)}"
 
 }
 
@@ -32,10 +30,7 @@ resource "aws_subnet" "vpc_private_subnets" {
     vpc_id = aws_vpc.vpc.id
     cidr_block = each.value["cidr"]
     availability_zone = each.value["az"]
-    tags = {
-        Name = "${var.vpc_name}-${each.key}"
-        network = "private"
-    }
+    tags = "${merge({Name = "${var.vpc_name}-${each.key}"},var.private_subnets_tags)}"
 }
 
 # Create InternetGW and attach it to VPC

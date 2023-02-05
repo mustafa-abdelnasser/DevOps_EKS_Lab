@@ -3,6 +3,18 @@ module "eks_iam" {
   source = "../modules/iam"
 }
 
+locals {
+  public_subnets_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/nlb"                      = "1"
+  }
+  private_subnets_tags = {
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-nlb"             = "1"
+  }
+}
+
+
 # create VPC network
 module "eks_networking" {
   source = "../modules/network"
@@ -10,6 +22,8 @@ module "eks_networking" {
   vpc_cidr = var.vpc_cidr
   vpc_public_subnets = var.vpc_public_subnets
   vpc_private_subnets = var.vpc_private_subnets
+  public_subnets_tags = local.public_subnets_tags
+  private_subnets_tags = local.private_subnets_tags
 }
 
 # create eks cluster and node_groups

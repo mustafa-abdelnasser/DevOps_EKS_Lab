@@ -27,6 +27,11 @@ variable "vpc_public_subnets" {
     }
 }
 
+variable "public_subnets_tags" {
+  type = map
+}
+
+
 variable "vpc_private_subnets" {
     description = "VPC Private Subnets"
     type    = map
@@ -40,4 +45,8 @@ variable "vpc_private_subnets" {
             cidr = "192.168.12.0/24"
         }
     }
+}
+
+variable "private_subnets_tags" {
+  type = map
 }
