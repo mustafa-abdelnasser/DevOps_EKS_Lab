@@ -19,3 +19,12 @@ provider "aws" {
   access_key = var.access_key
   secret_key = var.secret_key
 }
+
+# helm provider
+provider "helm" {
+  kubernetes {
+    host = module.eks_cluster.endpoint
+    cluster_ca_certificate = module.eks_cluster.certificate_authority_data
+    token = data.aws_eks_cluster_auth.eks_cluster.token
+  }
+}
