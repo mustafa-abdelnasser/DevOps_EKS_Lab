@@ -45,3 +45,4 @@ data "aws_eks_cluster_auth" "eks_cluster" {
 module "nginx_ingress_controller" {
   source = "../modules/helm_charts/ingress-controller"
 }
+

@@ -7,3 +7,4 @@ resource "helm_release" "nginx-ingress-controller" {
     "${file("../modules/helm_charts/ingress-controller/ingress_controller_values.yaml")}"
   ]
 }
+
