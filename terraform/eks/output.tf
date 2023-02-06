@@ -21,7 +21,6 @@ output "private_subnet_list" {
 
 output "eks_cluster_endpoint" {
   value = module.eks_cluster.endpoint
-  sensitive = true
 }
 
 output "eks_cluster_certificate_authority" {
@@ -30,4 +29,5 @@ output "eks_cluster_certificate_authority" {
 
 output "eks_cluster_token-test" {
   value = data.aws_eks_cluster_auth.eks_cluster.token
+  sensitive = true
 }
