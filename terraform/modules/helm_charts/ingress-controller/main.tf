@@ -4,6 +4,6 @@ resource "helm_release" "nginx-ingress-controller" {
   chart = "nginx-ingress"
   version = "0.16.1"
   values = [
-    "${file("ingress_controller_values.yaml")}"
+    "${file("../modules/helm_charts/ingress-controller/ingress_controller_values.yaml")}"
   ]
 }
