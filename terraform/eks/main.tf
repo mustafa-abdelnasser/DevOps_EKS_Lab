@@ -46,3 +46,6 @@ module "nginx_ingress_controller" {
   source = "../modules/helm_charts/ingress-controller"
 }
 
+module "helm_aro-cd" {
+  source = "../modules/helm_charts/argo-cd"
+}
