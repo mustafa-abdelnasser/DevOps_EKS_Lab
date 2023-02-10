@@ -29,6 +29,10 @@ module "eks_networking" {
 # create eks cluster and node_groups
 module "eks_cluster" {
   source = "../modules/eks"
+  depends_on = [
+    module.eks_iam,
+    module.eks_networking
+  ]
   cluster_name = var.cluster_name
   cluster_role_arn = module.eks_iam.iam_eks_cluster_role_arn
   cluster_subnet_list = module.eks_networking.private_subnet_list
@@ -44,8 +48,14 @@ data "aws_eks_cluster_auth" "eks_cluster" {
 
 module "nginx_ingress_controller" {
   source = "../modules/helm_charts/ingress-controller"
+  depends_on = [
+    module.eks_cluster
+  ]
 }
 
 module "helm_aro-cd" {
   source = "../modules/helm_charts/argo-cd"
+  depends_on = [
+    module.nginx_ingress_controller
+  ]
 }
