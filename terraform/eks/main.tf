@@ -46,6 +46,15 @@ data "aws_eks_cluster_auth" "eks_cluster" {
   name = var.cluster_name
 }
 
+data "tls_certificate" "eks_cluster" {
+  url = module.eks_cluster.identity_issuer
+}
+
+resource "aws_iam_openid_connect_provider" "eks_cluster" {
+  client_id_list = [ "sts.amazonaws.com" ]
+  thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
+  url             = module.eks_cluster.identity_issuer
+}
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"
