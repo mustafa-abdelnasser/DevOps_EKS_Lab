@@ -46,16 +46,17 @@ data "aws_eks_cluster_auth" "eks_cluster" {
   name = var.cluster_name
 }
 
-module "nginx_ingress_controller" {
-  source = "../modules/helm_charts/ingress-controller"
-  depends_on = [
-    module.eks_cluster
-  ]
-}
 
-module "helm_aro-cd" {
-  source = "../modules/helm_charts/argo-cd"
-  depends_on = [
-    module.nginx_ingress_controller
-  ]
-}
+# module "nginx_ingress_controller" {
+#   source = "../modules/helm_charts/ingress-controller"
+#   depends_on = [
+#     module.eks_cluster
+#   ]
+# }
+
+# module "helm_aro-cd" {
+#   source = "../modules/helm_charts/argo-cd"
+#   depends_on = [
+#     module.nginx_ingress_controller
+#   ]
+# }
