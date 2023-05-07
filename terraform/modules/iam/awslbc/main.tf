@@ -3,7 +3,7 @@
 resource "aws_iam_policy" "awslbcPolicy" {
   name = var.awslbc_policy_name
   description = "AWS Load Balancer IAM Policy"
-  policy = file("./AWSLoadBalancerControllerIAMPolicy.json")
+  policy = file("./modules/iam/awslbc/AWSLoadBalancerControllerIAMPolicy.json")
 }
 
 resource "aws_iam_role" "awslbcRole" {

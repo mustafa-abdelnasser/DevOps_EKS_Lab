@@ -1,9 +1,9 @@
 
-output "iam_eks_cluster_role_arn" {
-  value = aws_iam_role.eks_cluster_role.arn
+output "iam_awslbcRole_arn" {
+  value = aws_iam_role.awslbcRole.arn
 }
 
-output "iam_eks_node_role_arn" {
-  value = aws_iam_role.eks_node_role.arn
+output "iam_awslbcPolicy_arn" {
+  value = aws_iam_policy.awslbcPolicy.arn
 }
 
