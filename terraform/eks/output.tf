@@ -32,6 +32,6 @@ output "eks_cluster_token-test" {
   sensitive = true
 }
 
-output "nginx_ingress_controller_service" {
-  value = module.nginx_ingress_controller.ingress_controller_service
-}
+# output "nginx_ingress_controller_service" {
+#   value = module.nginx_ingress_controller.ingress_controller_service
+# }
