@@ -1,6 +1,6 @@
 # create eks_iam_roles
 module "eks_iam" {
-  source = "../modules/iam"
+  source = "../modules/iam/eks"
 }
 
 locals {
@@ -55,6 +55,14 @@ resource "aws_iam_openid_connect_provider" "eks_cluster" {
   thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
   url             = module.eks_cluster.identity_issuer
 }
+
+module "iam_awslbc" {
+  source = "../modules/iam/awslbc"
+  aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
+  aws_iam_openid_connect_provider_arn_split = element(split("oidc-provider/","${aws_iam_openid_connect_provider.eks_cluster.arn}"),1)
+}
+
+
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"
