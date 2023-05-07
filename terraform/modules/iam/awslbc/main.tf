@@ -30,6 +30,6 @@ resource "aws_iam_role" "awslbcRole" {
 }
 
 resource "aws_iam_role_policy_attachment" "awslbcRoleAttatch" {
-  role = aws_iam_role.awslbcRole
+  role = aws_iam_role.awslbcRole.name
   policy_arn = aws_iam_policy.awslbcPolicy.arn
 }
