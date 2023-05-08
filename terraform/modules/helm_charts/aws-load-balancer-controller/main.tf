@@ -6,7 +6,7 @@ resource "helm_release" "aws-load-balancer-controller" {
   namespace = "kube-system"
   values = [
     templatefile("../modules/helm_charts/aws-load-balancer-controller/values_aws-lbc_v1.5.2.yaml", {
-      awslbc_iam_role = var.awslbc_iam_role_arn, clusterName = var.eks_cluster_name
+      awslbc_iam_role = var.awslbc_iam_role_arn, eks_cluster_name = var.eks_cluster_name
     })
   ]
 }
