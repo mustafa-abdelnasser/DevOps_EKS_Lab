@@ -69,7 +69,7 @@ module "aws-load-balancer-controller" {
     aws_iam_openid_connect_provider.eks_cluster
   ]
   awslbc_iam_role_arn = module.iam_awslbc.iam_awslbcRole_arn
-  eks_cluster_name = var.var.cluster_name
+  eks_cluster_name = var.cluster_name
 }
 
 
