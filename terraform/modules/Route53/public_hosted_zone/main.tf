@@ -1,4 +1,4 @@
 
-resource "aws_route53_zone" "devops-labs" {
+resource "aws_route53_zone" "dns_zone" {
   name = var.dns_zone_name
 }

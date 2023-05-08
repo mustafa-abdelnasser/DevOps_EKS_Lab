@@ -27,9 +27,13 @@ output "eks_cluster_certificate_authority" {
   value = module.eks_cluster.certificate_authority_data
 }
 
-output "eks_cluster_token-test" {
-  value = data.aws_eks_cluster_auth.eks_cluster.token
-  sensitive = true
+# output "eks_cluster_token-test" {
+#   value = data.aws_eks_cluster_auth.eks_cluster.token
+#   sensitive = true
+# }
+
+output "dns_zone_name_servers" {
+  value = module.route53_zone.dns_zone_name_servers
 }
 
 # output "nginx_ingress_controller_service" {
