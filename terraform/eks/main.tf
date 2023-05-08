@@ -62,7 +62,15 @@ module "iam_awslbc" {
   aws_iam_openid_connect_provider_arn_split = element(split("oidc-provider/","${aws_iam_openid_connect_provider.eks_cluster.arn}"),1)
 }
 
-
+module "aws-load-balancer-controller" {
+  source = "../modules/helm_charts/aws-load-balancer-controller"
+  depends_on = [
+    module.eks_cluster,
+    aws_iam_openid_connect_provider.eks_cluster
+  ]
+  awslbc_iam_role_arn = module.iam_awslbc.iam_awslbcRole_arn
+  eks_cluster_name = var.var.cluster_name
+}
 
 
 # module "nginx_ingress_controller" {
