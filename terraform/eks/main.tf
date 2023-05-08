@@ -73,6 +73,11 @@ module "aws-load-balancer-controller-helm" {
   eks_cluster_name = var.cluster_name
 }
 
+module "route53_zone" {
+  source = "../modules/Route53/public_hosted_zone"
+  dns_zone_name = var.dns_zone_name
+}
+
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"
