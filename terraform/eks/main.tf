@@ -83,9 +83,18 @@ module "aws-load-balancer-controller-helm" {
 module "aws_certificate_manger" {
   source = "../modules/aws_certificate_manger"
   dns_zone_name = var.dns_zone_name
-  domain_name = var.domain_name
+  domain_name = "*.${var.domain_name}"
 }
 
+module "argo-cd-helm" {
+  source = "../modules/helm_charts/argo-cd"
+  depends_on = [ 
+    module.eks_cluster,
+    module.aws_certificate_manger
+   ]
+   certificate_arn = module.aws_certificate_manger.certificate_arn
+   domain_name = var.domain_name
+}
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"
