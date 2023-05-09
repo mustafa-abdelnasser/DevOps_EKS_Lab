@@ -104,5 +104,8 @@ variable "cluster_node_groups" {
 variable "dns_zone_name" {
   description = "route 53 zone name"
   type = string
-  default = "eks.devops-labs.site"
+}
+
+variable "domain_name" {
+  type = string
 }

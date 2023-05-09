@@ -73,9 +73,17 @@ module "aws-load-balancer-controller-helm" {
   eks_cluster_name = var.cluster_name
 }
 
-module "route53_zone" {
-  source = "../modules/Route53/public_hosted_zone"
+# create route53 dns hosted zone
+# module "route53_zone" {
+#   source = "../modules/Route53/public_hosted_zone"
+#   dns_zone_name = var.dns_zone_name
+# }
+
+# create certificate
+module "aws_certificate_manger" {
+  source = "../modules/aws_certificate_manger"
   dns_zone_name = var.dns_zone_name
+  domain_name = var.domain_name
 }
 
 
