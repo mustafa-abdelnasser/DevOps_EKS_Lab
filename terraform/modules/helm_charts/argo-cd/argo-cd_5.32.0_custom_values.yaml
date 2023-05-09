@@ -1819,7 +1819,7 @@ server:
 
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: false
+    enabled: true
     # -- Additional ingress annotations
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
