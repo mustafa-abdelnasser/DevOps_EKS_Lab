@@ -1,3 +1,4 @@
-output "ingress_load_balancer_name" {
-    value = helm_release.argo-cd
+output "argo-cd_ingress_hostname" {
+    value = data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname
 }
+
