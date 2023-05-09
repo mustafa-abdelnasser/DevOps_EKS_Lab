@@ -16,6 +16,7 @@ resource "helm_release" "argo-cd" {
 data "kubernetes_ingress_v1" "argo-cd" {
   metadata {
     name = "argo-cd-argocd-server"
+    namespace = "argo-cd"
   }
 }
 
