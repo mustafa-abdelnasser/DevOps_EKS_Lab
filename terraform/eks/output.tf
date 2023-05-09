@@ -42,7 +42,7 @@ output "certificate_arn" {
 
 output "argo-cd-helm" {
   value = module.argo-cd-helm.ingress_load_balancer_name
-  sensitive = true
+  sensitive = false
 }
 
 # output "nginx_ingress_controller_service" {
