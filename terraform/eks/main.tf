@@ -94,6 +94,7 @@ module "argo-cd-helm" {
    ]
    certificate_arn = module.aws_certificate_manger.certificate_arn
    domain_name = var.domain_name
+   dns_zone_name = var.dns_zone_name
 }
 
 # module "nginx_ingress_controller" {

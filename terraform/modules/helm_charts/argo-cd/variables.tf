@@ -5,3 +5,7 @@ variable "domain_name" {
 variable "certificate_arn" {
   type = string
 }
+
+variable "dns_zone_name" {
+  type = string
+}

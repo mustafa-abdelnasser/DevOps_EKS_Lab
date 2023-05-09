@@ -19,8 +19,12 @@ data "kubernetes_ingress_v1" "argo-cd" {
   }
 }
 
+data "aws_route53_zone" "dns_zone" {
+  name         = var.dns_zone_name
+}
+
 resource "aws_route53_record" "argo-cd" {
-  zone_id = data.aws_route53_zone.k8.zone_id
+  zone_id = data.aws_route53_zone.dns_zone.id
   name    = "argocd.${var.domain_name}"
   type    = "CNAME"
   ttl     = "300"
