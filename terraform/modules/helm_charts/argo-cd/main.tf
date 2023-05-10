@@ -25,9 +25,11 @@ data "aws_route53_zone" "dns_zone" {
 }
 
 resource "aws_route53_record" "argo-cd" {
+  depends_on = [ data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname ]
   zone_id = data.aws_route53_zone.dns_zone.id
   name    = "argocd.${var.domain_name}"
   type    = "CNAME"
   ttl     = "300"
   records = [data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname]
 }
+
