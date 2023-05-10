@@ -1825,10 +1825,10 @@ server:
       alb.ingress.kubernetes.io/scheme: internet-facing
       alb.ingress.kubernetes.io/group.name: eks-cluster-apps
       alb.ingress.kubernetes.io/group.order: '10'
-      alb.ingress.kubernetes.io/ssl-redirect: '443'
+      #alb.ingress.kubernetes.io/ssl-redirect: '443'
       alb.ingress.kubernetes.io/target-type: instance
-      alb.ingress.kubernetes.io/backend-protocol: HTTP
-      alb.ingress.kubernetes.io/backend-protocol-version: HTTP2
+      #alb.ingress.kubernetes.io/backend-protocol: HTTP
+      #alb.ingress.kubernetes.io/backend-protocol-version: HTTP2
       alb.ingress.kubernetes.io/certificate-arn: ${certificate_arn}
 
     # -- Additional ingress labels
