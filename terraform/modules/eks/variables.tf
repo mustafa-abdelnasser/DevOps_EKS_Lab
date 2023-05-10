@@ -41,3 +41,7 @@ variable "cluster_node_groups" {
         }
     }
 }
+
+variable "eks_node_group_pub_key" {
+  type = string
+}

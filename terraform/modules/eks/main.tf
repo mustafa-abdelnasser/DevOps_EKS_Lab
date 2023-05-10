@@ -13,6 +13,10 @@ resource "aws_eks_cluster" "eks_cluster" {
 
 }
 
+resource "aws_key_pair" "eks_node_group_key" {
+    key_name = "eks_node_group_pub_key"
+    public_key = var.eks_node_group_pub_key
+}
 
 resource "aws_eks_node_group" "eks_cluster_node_group" {
     for_each = var.cluster_node_groups

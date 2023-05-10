@@ -109,3 +109,7 @@ variable "dns_zone_name" {
 variable "domain_name" {
   type = string
 }
+
+variable "eks_node_group_pub_key" {
+  type = string
+}

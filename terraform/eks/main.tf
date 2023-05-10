@@ -40,6 +40,7 @@ module "eks_cluster" {
   
   node_role_arn = module.eks_iam.iam_eks_node_role_arn
   cluster_node_groups = var.cluster_node_groups
+  eks_node_group_pub_key = var.eks_node_group_pub_key
 }
 
 data "aws_eks_cluster_auth" "eks_cluster" {
