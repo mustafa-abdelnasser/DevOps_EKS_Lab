@@ -48,6 +48,6 @@ resource "aws_instance" "ec2" {
   ami = data.aws_ami.os
   instance_type = var.ec2_instance_type
   subnet_id = var.subnet_id
-  key_name = var.ec2_keypair_name
+  key_name = aws_key_pair.ec2_pub_key
 }
 
