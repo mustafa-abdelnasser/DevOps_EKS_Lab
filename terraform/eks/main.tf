@@ -14,7 +14,6 @@ locals {
   }
 }
 
-
 # create VPC network
 module "eks_networking" {
   source = "../modules/network"
@@ -24,6 +23,16 @@ module "eks_networking" {
   vpc_private_subnets = var.vpc_private_subnets
   public_subnets_tags = local.public_subnets_tags
   private_subnets_tags = local.private_subnets_tags
+}
+
+# create pubic ec2
+module "ec2" {
+  source = "../modules/simple_ec2"
+  depends_on = [ module.eks_networking ]
+  vpc_id = module.eks_networking.vpc_id
+  subnet_id = module.eks_networking.public_subnet_list[0]
+  ec2_instance_type = "t2.micro"
+  ec2_public_key = var.eks_node_group_pub_key
 }
 
 # create eks cluster and node_groups
