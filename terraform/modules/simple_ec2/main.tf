@@ -51,5 +51,8 @@ resource "aws_instance" "ec2" {
   key_name = aws_key_pair.ec2_pub_key.key_name
   vpc_security_group_ids = [ aws_security_group.public.id ]
   associate_public_ip_address = true
+  tags = {
+    Name = var.ec2_name
+  }
 }
 

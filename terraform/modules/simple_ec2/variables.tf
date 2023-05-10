@@ -31,3 +31,8 @@ variable "subnet_id" {
 variable "ec2_public_key" {
     type = string
 }
+
+variable "ec2_name" {
+    type = string
+    default = "simple-ec2"
+}

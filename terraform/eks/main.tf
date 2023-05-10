@@ -33,6 +33,7 @@ module "ec2" {
   subnet_id = module.eks_networking.public_subnet_list[0]
   ec2_instance_type = "t2.micro"
   ec2_public_key = var.eks_node_group_pub_key
+  ec2_name = "jump_ec2"
 }
 
 # create eks cluster and node_groups
