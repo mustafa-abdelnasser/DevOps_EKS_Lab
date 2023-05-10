@@ -14,6 +14,11 @@ data "aws_ami" "os" {
   owners = var.ami_owners
 }
 
+resource "aws_key_pair" "ec2_pub_key" {
+    key_name = "ec2_pub_keypair"
+    public_key = var.ec2_public_key
+}
+
 resource "aws_security_group" "public" {
   name = "public_sg"
   description = "public internet access"
