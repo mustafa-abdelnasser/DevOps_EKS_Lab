@@ -52,7 +52,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [ aws_security_group.public.id ]
   associate_public_ip_address = true
   tags = {
-    Name = var.ec2_name
+    Name = "${var.ec2_name}"
   }
 }
 
