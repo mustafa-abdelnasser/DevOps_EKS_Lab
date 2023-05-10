@@ -49,6 +49,6 @@ resource "aws_instance" "ec2" {
   instance_type = var.ec2_instance_type
   subnet_id = var.subnet_id
   key_name = aws_key_pair.ec2_pub_key.key_name
-  security_groups = [ aws_security_group.public ]
+  vpc_security_vpc_security_group_ids = [ aws_security_group.public.id ]
 }
 
