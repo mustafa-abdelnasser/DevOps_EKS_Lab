@@ -1,3 +1,11 @@
+  required_providers {
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.14.0"
+    }
+  }
+
+
 resource "helm_release" "argo-cd" {
   name = "argo-cd"
   repository = "https://argoproj.github.io/argo-helm"
