@@ -75,6 +75,9 @@ resource "helm_release" "metric-server" {
   chart = "metrics-server"
   version = "3.10.0"
   namespace = "kube-system"
+  depends_on = [ 
+    module.eks_cluster
+   ]
 }
 
 
@@ -111,6 +114,7 @@ module "argo-cd-helm" {
   source = "../modules/helm_charts/argo-cd"
   depends_on = [ 
     module.eks_cluster,
+    module.aws-load-balancer-controller-helm,
     module.aws_certificate_manger
    ]
    certificate_arn = module.aws_certificate_manger.certificate_arn
