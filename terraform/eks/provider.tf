@@ -40,7 +40,6 @@ provider "kubernetes" {
 }
 
 provider "kubectl" {
-  source  = "gavinbunney/kubectl"
   host = module.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(module.eks_cluster.certificate_authority_data)
   token = data.aws_eks_cluster_auth.eks_cluster.token
