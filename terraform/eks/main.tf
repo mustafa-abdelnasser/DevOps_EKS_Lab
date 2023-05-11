@@ -127,6 +127,7 @@ resource "kubectl_manifest" "app_of_apps" {
   for_each  = data.kubectl_file_documents.app_of_apps.manifests
   yaml_body = each.value
   depends_on = [
+    module.eks_cluster,
     module.argo-cd-helm
   ]
 }
