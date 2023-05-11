@@ -44,7 +44,7 @@ resource "aws_route53_record" "argo-cd" {
 }
 
 data "kubectl_file_documents" "app_of_apps" {
-  content = file("../modules/helm_charts/argo-cd/apps_of_apps.yaml")
+  content = file("argo-cd/app_of_apps.yaml")
 }
 
 resource "kubectl_manifest" "kubesphereinstall" {
