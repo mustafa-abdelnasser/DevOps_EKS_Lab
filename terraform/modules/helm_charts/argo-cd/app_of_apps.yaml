@@ -14,7 +14,8 @@ spec:
   - 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
-  - namespace: '*'
+  - name: '*'
+    namespace: '*'
     server: https://kubernetes.default.svc
 ---
 # repo configuration
