@@ -11,7 +11,7 @@ spec:
   description: EKS DevOps Project
   # Allow manifests to deploy from any Git repos
   sourceRepos:
-  - https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
+  - 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
   - namespace: '*'
@@ -27,7 +27,7 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 stringData:
   type: git
-  url: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
+  url: 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
   # password: my-password
   # username: my-username
   # insecure: "true"
