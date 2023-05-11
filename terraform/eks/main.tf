@@ -68,6 +68,16 @@ resource "aws_iam_openid_connect_provider" "eks_cluster" {
   url             = module.eks_cluster.identity_issuer
 }
 
+# install kubernetes Metric Server needed for kubectl top and HPA
+resource "helm_release" "metric-server" {
+  name = "metrics-server"
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart = "metrics-server"
+  version = "3.10.0"
+  namespace = "kube-system"
+}
+
+
 module "iam_awslbc" {
   source = "../modules/iam/awslbc"
   aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
@@ -107,6 +117,8 @@ module "argo-cd-helm" {
    domain_name = var.domain_name
    dns_zone_name = var.dns_zone_name
 }
+
+# 
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"
