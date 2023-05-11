@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kuard
-  namespace: test-apps
+  name: echoserver
+  namespace: echoserver
 spec:
   selector:
     matchLabels:
-      app: kuard
+      app: echoserver
   replicas: 1
   template:
     metadata:
       labels:
-        app: kuard
+        app: echoserver
     spec:
       containers:
-      - image: gcr.io/kuar-demo/kuard-amd64:1
+      - image: k8s.gcr.io/e2e-test-images/echoserver:2.5
         imagePullPolicy: Always
-        name: kuard
+        name: echoserver
         ports:
         - containerPort: 8080

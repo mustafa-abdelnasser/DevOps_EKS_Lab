@@ -3,7 +3,7 @@ resource "helm_release" "argo-cd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart = "argo-cd"
   version = "5.32.0"
-  namespace = "argo-cd"
+  namespace = "argocd"
   create_namespace = true
   values = [
     templatefile("../modules/helm_charts/argo-cd/argo-cd_5.32.0_custom_values.yaml", {
@@ -16,7 +16,7 @@ resource "helm_release" "argo-cd" {
 data "kubernetes_ingress_v1" "argo-cd" {
   metadata {
     name = "argo-cd-argocd-server"
-    namespace = "argo-cd"
+    namespace = "argocd"
   }
 }
 
@@ -25,7 +25,7 @@ data "aws_route53_zone" "dns_zone" {
 }
 
 resource "aws_route53_record" "argo-cd" {
-  depends_on = [ data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname ]
+  # depends_on = [ data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname ]
   zone_id = data.aws_route53_zone.dns_zone.id
   name    = "argocd.${var.domain_name}"
   type    = "CNAME"
@@ -33,3 +33,14 @@ resource "aws_route53_record" "argo-cd" {
   records = [data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname]
 }
 
+data "kubectl_file_documents" "app_of_apps" {
+  content = file("../modules/helm_charts/argo-cd/apps_of_apps.yaml")
+}
+
+resource "kubectl_manifest" "kubesphereinstall" {
+  for_each  = data.kubectl_file_documents.app_of_apps.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.argo-cd
+  ]
+}

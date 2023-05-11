@@ -2,24 +2,30 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kuard
-  namespace: kurad
-#  annotations:  
+  namespace: test-apps
+  annotations:  
     #cert-manager.io/issuer: "letsencrypt-staging"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: eks-cluster-apps
+    alb.ingress.kubernetes.io/group.order: '11'
+    alb.ingress.kubernetes.io/target-type: instance
+    #alb.ingress.kubernetes.io/certificate-arn: ${certificate_arn}
+
 
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
 #  tls:
 #  - hosts:
 #    - example.example.com
 #    secretName: quickstart-example-tls
   rules:
-  - host: kurad.devops-labs.site
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: kuard
-            port:
-              number: 80
+    - host: kuard.
+      http:
+        paths:
+        - path: /
+          pathType: Exact
+          backend:
+            service:
+              name: kuard
+              port:
+                number: 80

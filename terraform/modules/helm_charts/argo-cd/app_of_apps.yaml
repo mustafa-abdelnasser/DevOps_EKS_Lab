@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: EKS-DevOps
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: EKS DevOps Project
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  destinations:
+  - namespace: '*'
+    server: https://kubernetes.default.svc
+
+---
+# repo configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: DevOps_EKS_Lab/tree/EKS-AWS-ALB-Controller-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  type: git
+  url: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
+  # password: my-password
+  # username: my-username
+  # insecure: "true"
+  # forceHttpBasicAuth: "true"
+  # enableLfs: "true"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+spec:
+  destination:
+    name: ''
+    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ./argocd-apps/
+    repoURL: 'https://github.com/mustafa-abdelnasser/FE_CCE_DevOps'
+    targetRevision: EKS-AWS-ALB-Controller
+  project: EKS-DevOps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
