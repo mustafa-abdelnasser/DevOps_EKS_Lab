@@ -5,11 +5,17 @@ metadata:
   namespace: echoserver
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+    alb.ingress.kubernetes.io/group.name: eks-cluster-apps
+    alb.ingress.kubernetes.io/group.order: '11'
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:841825461216:certificate/03c4f5c6-e284-4944-a71e-1c764185431a"
+
+
 spec:
   ingressClassName: alb
   rules:
-    - http:
+    - host: echoserver.cmcloudlab868.info
+      http:
         paths:
           - path: /
             pathType: Exact
