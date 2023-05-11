@@ -1,3 +1,4 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -15,7 +16,6 @@ spec:
   destinations:
   - namespace: '*'
     server: https://kubernetes.default.svc
-
 ---
 # repo configuration
 apiVersion: v1
@@ -33,7 +33,6 @@ stringData:
   # insecure: "true"
   # forceHttpBasicAuth: "true"
   # enableLfs: "true"
-
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
