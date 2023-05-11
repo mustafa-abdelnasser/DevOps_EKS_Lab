@@ -118,7 +118,18 @@ module "argo-cd-helm" {
    dns_zone_name = var.dns_zone_name
 }
 
-# 
+# install argocd app-of-apps
+data "kubectl_file_documents" "app_of_apps" {
+  content = file("../modules/helm_charts/argo-cd/app_of_apps.yaml")
+}
+
+resource "kubectl_manifest" "app_of_apps" {
+  for_each  = data.kubectl_file_documents.app_of_apps.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.argo-cd
+  ]
+}
 
 # module "nginx_ingress_controller" {
 #   source = "../modules/helm_charts/ingress-controller"

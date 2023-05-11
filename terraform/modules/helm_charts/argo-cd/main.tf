@@ -1,11 +1,11 @@
-terraform {
-  required_providers {
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14.0"
-    }
-  }
-}
+# terraform {
+#   required_providers {
+#     kubectl = {
+#       source  = "gavinbunney/kubectl"
+#       version = ">= 1.14.0"
+#     }
+#   }
+# }
 
 
 resource "helm_release" "argo-cd" {
@@ -41,16 +41,4 @@ resource "aws_route53_record" "argo-cd" {
   type    = "CNAME"
   ttl     = "300"
   records = [data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname]
-}
-
-data "kubectl_file_documents" "app_of_apps" {
-  content = file("../modules/helm_charts/argo-cd/app_of_apps.yaml")
-}
-
-resource "kubectl_manifest" "app_of_apps" {
-  for_each  = data.kubectl_file_documents.app_of_apps.manifests
-  yaml_body = each.value
-  depends_on = [
-    helm_release.argo-cd
-  ]
 }
