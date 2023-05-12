@@ -113,9 +113,9 @@ data "aws_route53_zone" "dns_zone" {
 
 # create certificate
 module "aws_certificate_manger" {
-  depends_on = [ 
-    module.route53_zone
-   ]
+  # depends_on = [ 
+  #   module.route53_zone
+  #  ]
   source = "../modules/aws_certificate_manger"
   # dns_zone_id = module.route53_zone.dns_zone_id
   dns_zone_id = data.aws_route53_zone.dns_zone.zone_id
