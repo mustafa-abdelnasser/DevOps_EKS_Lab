@@ -69,6 +69,9 @@ resource "aws_key_pair" "eks_node_group_key" {
     public_key = var.eks_node_group_pub_key
 }
 
+# security group that only allows ssh from our basion host secuirty group
+
+# eks node groups
 resource "aws_eks_node_group" "eks_cluster_node_group" {
     for_each = var.cluster_node_groups
 
@@ -79,7 +82,10 @@ resource "aws_eks_node_group" "eks_cluster_node_group" {
     disk_size = each.value["disk_size"]
     instance_types = each.value["instance_types"]
     capacity_type = each.value["capacity_type"]
-    ec2_ssh_key = aws_key_pair.eks_node_group_key.key_name
+
+    remote_access {
+      ec2_ssh_key = aws_key_pair.eks_node_group_key.key_name
+    }
 
     scaling_config {
         desired_size = each.value["desired_size"]
