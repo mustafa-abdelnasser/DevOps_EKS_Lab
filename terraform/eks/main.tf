@@ -113,7 +113,7 @@ module "aws_certificate_manger" {
     module.route53_zone
    ]
   source = "../modules/aws_certificate_manger"
-  dns_zone_name = var.dns_zone_name
+  dns_zone_id = module.route53_zone.dns_zone_id
   domain_name = "*.${var.domain_name}"
 }
 
