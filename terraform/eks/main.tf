@@ -101,10 +101,14 @@ module "aws-lb-controller-edns" {
 }
 
 
-# create route53 dns hosted zone
-module "route53_zone" {
-  source = "../modules/Route53/public_hosted_zone"
-  dns_zone_name = var.dns_zone_name
+# # create route53 dns hosted zone
+# module "route53_zone" {
+#   source = "../modules/Route53/public_hosted_zone"
+#   dns_zone_name = var.dns_zone_name
+# }
+
+data "aws_route53_zone" "dns_zone" {
+  name = var.dns_zone_name
 }
 
 # create certificate
@@ -113,7 +117,8 @@ module "aws_certificate_manger" {
     module.route53_zone
    ]
   source = "../modules/aws_certificate_manger"
-  dns_zone_id = module.route53_zone.dns_zone_id
+  # dns_zone_id = module.route53_zone.dns_zone_id
+  dns_zone_id = data.aws_route53_zone.dns_zone.zone_id
   domain_name = "*.${var.domain_name}"
 }
 
