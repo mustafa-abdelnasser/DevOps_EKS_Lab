@@ -109,6 +109,9 @@ module "route53_zone" {
 
 # create certificate
 module "aws_certificate_manger" {
+  depends_on = [ 
+    module.route
+   ]
   source = "../modules/aws_certificate_manger"
   dns_zone_name = var.dns_zone_name
   domain_name = "*.${var.domain_name}"
