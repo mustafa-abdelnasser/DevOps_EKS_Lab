@@ -40,9 +40,9 @@ output "certificate_arn" {
   value = module.aws_certificate_manger.certificate_arn
 }
 
-output "argo-cd-load_balancer" {
-  value = module.argo-cd-helm.argo-cd_ingress_loadbalancer_hostname
-}
+# output "argo-cd-load_balancer" {
+#   value = module.argo-cd-helm.argo-cd_ingress_loadbalancer_hostname
+# }
 
 output "argo-cd-address" {
   value = module.argo-cd-helm.argo-cd_ingress_hostname

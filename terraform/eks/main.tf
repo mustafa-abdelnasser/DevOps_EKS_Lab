@@ -94,7 +94,7 @@ module "aws-lb-controller-edns" {
   source = "../modules/aws-lb-external-dns"
   depends_on = [
     module.eks_cluster,
-    module.module.aws-lb-controller,
+    module.aws-lb-controller,
     module.aws_certificate_manger
   ]
   iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
