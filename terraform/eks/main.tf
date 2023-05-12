@@ -106,7 +106,7 @@ module "argo-cd-helm" {
   source = "../modules/helm_charts/argo-cd"
   depends_on = [ 
     module.eks_cluster,
-    module.aws-load-balancer-controller-helm,
+    module.aws-lb-controller,
     module.aws_certificate_manger
    ]
    certificate_arn = module.aws_certificate_manger.certificate_arn
