@@ -90,7 +90,7 @@ module "aws-lb-controller" {
 }
 
 # external DNS
-module "aws-lb-controller" {
+module "aws-lb-controller-edns" {
   source = "../modules/aws-lb-external-dns"
   depends_on = [
     module.eks_cluster,
