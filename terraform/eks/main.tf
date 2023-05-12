@@ -45,21 +45,21 @@ module "eks_cluster" {
   eks_node_group_pub_key = var.eks_node_group_pub_key
 }
 
-data "aws_eks_cluster_auth" "eks_cluster" {
-  name = var.cluster_name
-}
+# data "aws_eks_cluster_auth" "eks_cluster" {
+#   name = var.cluster_name
+# }
 
-data "tls_certificate" "eks_cluster" {
-  url = module.eks_cluster.identity_issuer
-}
+# data "tls_certificate" "eks_cluster" {
+#   url = module.eks_cluster.identity_issuer
+# }
 
-# configure iam open id connect for eks service accounts to use IAM roles
-resource "aws_iam_openid_connect_provider" "eks_cluster" {
-  depends_on = [ module.eks_cluster ]
-  client_id_list = [ "sts.amazonaws.com" ]
-  thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
-  url             = module.eks_cluster.identity_issuer
-}
+# # configure iam open id connect for eks service accounts to use IAM roles
+# resource "aws_iam_openid_connect_provider" "eks_cluster" {
+#   depends_on = [ module.eks_cluster ]
+#   client_id_list = [ "sts.amazonaws.com" ]
+#   thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
+#   url             = module.eks_cluster.identity_issuer
+# }
 
 # install kubernetes Metric Server needed for kubectl top and HPA
 resource "helm_release" "metric-server" {
@@ -74,20 +74,19 @@ resource "helm_release" "metric-server" {
 }
 
 # Install aws load balancer controller
-module "iam_awslbc" {
-  source = "../modules/iam/awslbc"
-  aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
-  aws_iam_openid_connect_provider_arn_split = element(split("oidc-provider/","${aws_iam_openid_connect_provider.eks_cluster.arn}"),1)
-}
+# module "iam_awslbc" {
+#   source = "../modules/iam/awslbc"
+#   aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
+#   aws_iam_openid_connect_provider_arn_split = element(split("oidc-provider/","${aws_iam_openid_connect_provider.eks_cluster.arn}"),1)
+# }
 
 module "aws-lb-controller" {
-  source = "../modules/helm_charts/aws-lb-controller"
+  source = "../modules/aws-lb-controller"
   depends_on = [
-    module.eks_cluster,
-    aws_iam_openid_connect_provider.eks_cluster
+    module.eks_cluster
   ]
-  awslbc_iam_role_arn = module.iam_awslbc.iam_awslbcRole_arn
   eks_cluster_name = var.cluster_name
+  iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
 }
 
 # create route53 dns hosted zone

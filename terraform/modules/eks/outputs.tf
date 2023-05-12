@@ -18,3 +18,11 @@ output "iam_eks_cluster_role_arn" {
 output "iam_eks_node_role_arn" {
   value = aws_iam_role.eks_node_role.arn
 }
+
+output "iam_openid_connect_provider_arn" {
+  value = aws_iam_openid_connect_provider.eks_cluster.arn
+}
+
+output "cluster_auth" {
+  value = data.aws_eks_cluster_auth.eks_cluster
+}

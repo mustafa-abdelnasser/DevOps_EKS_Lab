@@ -29,19 +29,19 @@ provider "helm" {
   kubernetes {
     host = module.eks_cluster.endpoint
     cluster_ca_certificate = base64decode(module.eks_cluster.certificate_authority_data)
-    token = data.aws_eks_cluster_auth.eks_cluster.token
+    token = module.eks_cluster.cluster_auth.token
   }
 }
 
 provider "kubernetes" {
   host = module.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(module.eks_cluster.certificate_authority_data)
-  token = data.aws_eks_cluster_auth.eks_cluster.token
+  token = module.eks_cluster.cluster_auth.token
 }
 
 provider "kubectl" {
   host = module.eks_cluster.endpoint
   cluster_ca_certificate = base64decode(module.eks_cluster.certificate_authority_data)
-  token = data.aws_eks_cluster_auth.eks_cluster.token
+  token = module.eks_cluster.cluster_auth.token
   load_config_file = false
 }
