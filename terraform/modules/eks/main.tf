@@ -91,3 +91,15 @@ resource "aws_eks_node_group" "eks_cluster_node_group" {
         max_unavailable = 1
     }
 }
+
+# configure iam open id connect for eks service accounts to use IAM roles
+data "tls_certificate" "eks_cluster" {
+  url = aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "eks_cluster" {
+  depends_on = [ module.eks_cluster ]
+  client_id_list = [ "sts.amazonaws.com" ]
+  thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
+  url             = aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer
+}
