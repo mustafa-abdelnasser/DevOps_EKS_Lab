@@ -1,3 +1,14 @@
+variable "cluster_role_name" {
+    description = "eks cluster role name"
+    type = string
+    default = "EKSClusterRole"
+}
+
+variable "node_role_name" {
+    description = "eks Node role name"
+    type = string
+    default = "EKSNodeRole"
+}
 
 variable "cluster_name" {
     description = "eks cluster name"
@@ -8,18 +19,6 @@ variable "cluster_version" {
     description = "eks cluster version"
     type = string
 }
-
-
-variable "cluster_role_arn" {
-    description = "eks cluster role arn"
-    type = string
-}
-
-variable "node_role_arn" {
-    description = "eks node role arn"
-    type = string
-}
-
 
 variable "cluster_subnet_list" {
     description = "eks cluster subnet ids"

@@ -1,8 +1,4 @@
-# create eks_iam_roles
-module "eks_iam" {
-  source = "../modules/iam/eks"
-}
-
+# eks subnet tags
 locals {
   public_subnets_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
@@ -40,15 +36,11 @@ module "ec2" {
 module "eks_cluster" {
   source = "../modules/eks"
   depends_on = [
-    module.eks_iam,
     module.eks_networking
   ]
   cluster_name = var.cluster_name
-  cluster_role_arn = module.eks_iam.iam_eks_cluster_role_arn
   cluster_subnet_list = module.eks_networking.private_subnet_list
   cluster_version = var.cluster_version
-  
-  node_role_arn = module.eks_iam.iam_eks_node_role_arn
   cluster_node_groups = var.cluster_node_groups
   eks_node_group_pub_key = var.eks_node_group_pub_key
 }
@@ -61,6 +53,7 @@ data "tls_certificate" "eks_cluster" {
   url = module.eks_cluster.identity_issuer
 }
 
+# configure iam open id connect for eks service accounts to use IAM roles
 resource "aws_iam_openid_connect_provider" "eks_cluster" {
   depends_on = [ module.eks_cluster ]
   client_id_list = [ "sts.amazonaws.com" ]
@@ -80,7 +73,7 @@ resource "helm_release" "metric-server" {
    ]
 }
 
-
+# Install aws load balancer controller
 module "iam_awslbc" {
   source = "../modules/iam/awslbc"
   aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
