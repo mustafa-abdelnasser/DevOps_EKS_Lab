@@ -23,22 +23,22 @@ resource "helm_release" "argo-cd" {
 }
 
 
-data "kubernetes_ingress_v1" "argo-cd" {
-  metadata {
-    name = "argo-cd-argocd-server"
-    namespace = "argocd"
-  }
-}
+# data "kubernetes_ingress_v1" "argo-cd" {
+#   metadata {
+#     name = "argo-cd-argocd-server"
+#     namespace = "argocd"
+#   }
+# }
 
-data "aws_route53_zone" "dns_zone" {
-  name         = var.dns_zone_name
-}
+# data "aws_route53_zone" "dns_zone" {
+#   name         = var.dns_zone_name
+# }
 
-resource "aws_route53_record" "argo-cd" {
-  # depends_on = [ data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname ]
-  zone_id = data.aws_route53_zone.dns_zone.id
-  name    = "argocd.${var.domain_name}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname]
-}
+# resource "aws_route53_record" "argo-cd" {
+#   # depends_on = [ data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname ]
+#   zone_id = data.aws_route53_zone.dns_zone.id
+#   name    = "argocd.${var.domain_name}"
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [data.kubernetes_ingress_v1.argo-cd.status.0.load_balancer.0.ingress.0.hostname]
+# }

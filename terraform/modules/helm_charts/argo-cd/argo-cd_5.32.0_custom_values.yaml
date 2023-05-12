@@ -1830,6 +1830,7 @@ server:
       #alb.ingress.kubernetes.io/backend-protocol: HTTP
       #alb.ingress.kubernetes.io/backend-protocol-version: HTTP2
       alb.ingress.kubernetes.io/certificate-arn: ${certificate_arn}
+      external-dns.alpha.kubernetes.io/alias: true
 
     # -- Additional ingress labels
     labels: {}

@@ -89,6 +89,18 @@ module "aws-lb-controller" {
   iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
 }
 
+# external DNS
+module "aws-lb-controller" {
+  source = "../modules/aws-lb-external-dns"
+  depends_on = [
+    module.eks_cluster,
+    module.module.aws-lb-controller,
+    module.aws_certificate_manger
+  ]
+  iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
+}
+
+
 # create route53 dns hosted zone
 # module "route53_zone" {
 #   source = "../modules/Route53/public_hosted_zone"
