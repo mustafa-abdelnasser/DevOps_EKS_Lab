@@ -5,14 +5,12 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: ''
     namespace: test-apps
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
   source:
     path: ./argocd-apps/echoserver
-    repoURL: 'https://github.com/mustafa-abdelnasser/FE_CCE_DevOps'
+    repoURL: https://github.com/mustafa-abdelnasser/FE_CCE_DevOps
     targetRevision: EKS-AWS-ALB-Controller
-  sources: []
   project: eks-devops
   syncPolicy:
     automated:

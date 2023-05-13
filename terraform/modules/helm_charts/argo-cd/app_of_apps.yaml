@@ -11,10 +11,10 @@ spec:
   description: EKS DevOps Project
   # Allow manifests to deploy from any Git repos
   sourceRepos:
-  - 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
+  - https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   destinations:
-  - name: ''
+  - name: '*'
     namespace: '*'
     server: https://kubernetes.default.svc
 ---
@@ -27,8 +27,9 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
+  project: eks-devops
   type: git
-  url: 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
+  url: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
   # password: my-password
   # username: my-username
   # insecure: "true"
@@ -42,12 +43,11 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: ''
     namespace: test-apps
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
   source:
-    path: ./argocd-apps/
-    repoURL: 'https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab'
+    path: ./argocd-apps
+    repoURL: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
     targetRevision: EKS-AWS-ALB-Controller
   project: eks-devops
   syncPolicy:
