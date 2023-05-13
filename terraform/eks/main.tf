@@ -45,22 +45,6 @@ module "eks_cluster" {
   eks_node_group_pub_key = var.eks_node_group_pub_key
 }
 
-# data "aws_eks_cluster_auth" "eks_cluster" {
-#   name = var.cluster_name
-# }
-
-# data "tls_certificate" "eks_cluster" {
-#   url = module.eks_cluster.identity_issuer
-# }
-
-# # configure iam open id connect for eks service accounts to use IAM roles
-# resource "aws_iam_openid_connect_provider" "eks_cluster" {
-#   depends_on = [ module.eks_cluster ]
-#   client_id_list = [ "sts.amazonaws.com" ]
-#   thumbprint_list = [data.tls_certificate.eks_cluster.certificates[0].sha1_fingerprint]
-#   url             = module.eks_cluster.identity_issuer
-# }
-
 # install kubernetes Metric Server needed for kubectl top and HPA
 resource "helm_release" "metric-server" {
   name = "metrics-server"
@@ -74,12 +58,6 @@ resource "helm_release" "metric-server" {
 }
 
 # Install aws load balancer controller
-# module "iam_awslbc" {
-#   source = "../modules/iam/awslbc"
-#   aws_iam_openid_connect_provider_arn = aws_iam_openid_connect_provider.eks_cluster.arn
-#   aws_iam_openid_connect_provider_arn_split = element(split("oidc-provider/","${aws_iam_openid_connect_provider.eks_cluster.arn}"),1)
-# }
-
 module "aws-lb-controller" {
   source = "../modules/aws-lb-controller"
   depends_on = [
@@ -122,8 +100,9 @@ module "aws_certificate_manger" {
   domain_name = "*.${var.domain_name}"
 }
 
-module "argo-cd-helm" {
-  source = "../modules/helm_charts/argo-cd"
+# install argocd
+module "argo-cd" {
+  source = "../modules/argo-cd"
   depends_on = [ 
     module.eks_cluster,
     module.aws-lb-controller,
@@ -136,7 +115,7 @@ module "argo-cd-helm" {
 
 # install argocd app-of-apps
 data "kubectl_file_documents" "app_of_apps" {
-  content = file("../modules/helm_charts/argo-cd/app_of_apps.yaml")
+  content = file("../modules/argo-cd/app_of_apps.yaml")
 }
 
 resource "kubectl_manifest" "app_of_apps" {
@@ -147,17 +126,3 @@ resource "kubectl_manifest" "app_of_apps" {
     module.argo-cd-helm
   ]
 }
-
-# module "nginx_ingress_controller" {
-#   source = "../modules/helm_charts/ingress-controller"
-#   depends_on = [
-#     module.eks_cluster
-#   ]
-# }
-
-# module "helm_aro-cd" {
-#   source = "../modules/helm_charts/argo-cd"
-#   depends_on = [
-#     module.nginx_ingress_controller
-#   ]
-# }
