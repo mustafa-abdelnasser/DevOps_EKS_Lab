@@ -11,37 +11,6 @@ resource "aws_iam_instance_profile" "KarpenterNodeInstanceProfile" {
   role = var.eks_node_role_name
 }
 
-# resource "aws_iam_role" "KarpenterNodeRole" {
-#   name = "KarpenterNodeRole-${var.eks_cluster_name}"
-#   description = "KarpenterNode IAM Role"
-#   assume_role_policy = jsonencode({
-#     "Version": "2012-10-17",
-#     "Statement": [
-#         {
-#             "Effect": "Allow",
-#             "Principal": {
-#                 "Service": "ec2.amazonaws.com"
-#             },
-#             "Action": "sts:AssumeRole"
-#         }
-#     ]
-#   })
-# }
-
-# locals {
-#   karpenter_node_policies = ["AmazonEC2ContainerRegistryReadOnly", "AmazonEKSWorkerNodePolicy","AmazonEKS_CNI_Policy", "AmazonSSMManagedInstanceCore"]
-# }
-
-# resource "aws_iam_role_policy_attachment" "KarpenterNodeRole" {
-#   for_each = toset(local.karpenter_node_policies)
-
-#   policy_arn = "arn:aws:iam::aws:policy/${each.value}"
-#   role       = aws_iam_role.KarpenterNodeRole.name
-# }
-
-
-
-
 # IAM Roles and Polices for Karpenter controller
 locals {
   iam_openid_connect_provider = element(split("oidc-provider/","${var.iam_openid_connect_provider_arn}"),1)
@@ -154,8 +123,8 @@ resource "aws_sqs_queue" "KarpenterInterruptionQueue" {
 
 data "aws_iam_policy_document" "KarpenterInterruptionQueue" {
     statement {
-        "sid" = "EC2InterruptionPolicy"
-        "effect" = "Allow"
+        sid = "EC2InterruptionPolicy"
+        effect = "Allow"
 
         principals {
             type  = "service"
