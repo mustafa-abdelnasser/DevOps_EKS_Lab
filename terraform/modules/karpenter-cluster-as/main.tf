@@ -221,6 +221,7 @@ resource "helm_release" "karpenter" {
   chart = "karpenter"
   version = "0.16.3"
   namespace = "karpenter"
+  create_namespace = true
   values = [
     templatefile("../modules/karpenter-cluster-as/values_karpenter_0.16.3.yaml", {
       karpenter_controller_role_arn = aws_iam_role.KarpenterControllerRole.arn, 
