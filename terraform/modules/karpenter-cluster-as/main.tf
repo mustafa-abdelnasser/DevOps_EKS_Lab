@@ -121,27 +121,26 @@ resource "aws_sqs_queue" "KarpenterInterruptionQueue" {
     sqs_managed_sse_enabled = true
 }
 
-data "aws_iam_policy_document" "KarpenterInterruptionQueue" {
-    statement {
-        sid = "EC2InterruptionPolicy"
-        effect = "Allow"
-
-        principals {
-            type  = "service"
-            identifiers = [
-                "events.amazonaws.com",
-                "sqs.amazonaws.com"
-            ]
-        }
-
-        actions   = ["sqs:SendMessage"]
-        resources = ["${aws_sqs_queue.KarpenterInterruptionQueue.arn}"]
-    }
-}
 
 resource "aws_sqs_queue_policy" "KarpenterInterruptionQueuePolicy" {
     queue_url = aws_sqs_queue.KarpenterInterruptionQueue.id
-    policy = data.aws_iam_policy_document.KarpenterInterruptionQueue.json
+    policy = jsondecode({
+      "Version": "2008-10-17",
+      "Id": "EC2InterruptionPolicy",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": [
+              "events.amazonaws.com",
+              "sqs.amazonaws.com"
+            ]
+          },
+          "Action": "sqs:SendMessage",
+          "Resource": "${aws_sqs_queue.KarpenterInterruptionQueue.arn}"
+        }
+      ]
+    })
 }
 
 ####################
@@ -216,7 +215,7 @@ resource "aws_cloudwatch_event_target" "InstanceStateChangeRule" {
 
 resource "helm_release" "karpenter" {
   name = "karpenter"
-  repository = "https://aws.github.io/eks-charts"
+  repository = "https://charts.karpenter.sh"
   chart = "karpenter"
   version = "0.16.3"
   namespace = "karpenter"
