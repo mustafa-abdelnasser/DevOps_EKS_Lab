@@ -128,17 +128,17 @@ resource "aws_sqs_queue_policy" "KarpenterInterruptionQueuePolicy" {
       "Version": "2008-10-17",
       "Id": "EC2InterruptionPolicy",
       "Statement": [
-        {
-          "Effect": "Allow",
-          "Principal": {
-            "Service": [
-              "events.amazonaws.com",
-              "sqs.amazonaws.com"
-            ]
-          },
-          "Action": "sqs:SendMessage",
-          "Resource": "${aws_sqs_queue.KarpenterInterruptionQueue.arn}"
-        }
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "events.amazonaws.com",
+                "sqs.amazonaws.com"
+              ]
+            },
+            "Action": "sqs:SendMessage",
+            "Resource": "${aws_sqs_queue.KarpenterInterruptionQueue.arn}"
+          }
       ]
     })
 }
