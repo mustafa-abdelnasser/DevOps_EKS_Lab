@@ -90,7 +90,7 @@ variable "cluster_node_groups" {
         node_group_1 = {
             name = "node_group_01"
             capacity_type = "ON_DEMAND"
-            instance_types = ["t3.micro"]
+            instance_types = ["t3.medium"]
             disk_size = 10
             desired_size = 2
             max_size = 4
