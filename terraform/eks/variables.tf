@@ -21,9 +21,9 @@ variable "cluster_name" {
 }
 
 variable "eks_cluster_tags" {
-  type = map
+  type = map(string)
   default = {
-    karpenter.sh/discovery = "eks-cluster-01"
+    "karpenter.sh/discovery" = "eks-cluster-01"
   }
 }
 
