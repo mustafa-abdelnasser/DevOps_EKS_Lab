@@ -98,7 +98,7 @@ data "kubectl_file_documents" "default_provisioner" {
   })
 }
 
-resource "kubectl_manifest" "app_of_apps" {
+resource "kubectl_manifest" "default_provisioner" {
   for_each  = data.kubectl_file_documents.default_provisioner.manifests
   yaml_body = each.value
   depends_on = [
