@@ -89,12 +89,13 @@ module "karpenter" {
   eks_cluster_name = var.cluster_name
   iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
   eks_node_role_name = module.eks_cluster.iam_eks_node_role_name
+  eks_node_role_arn = module.eks_cluster.iam_eks_node_role_arn
 }
 
 ## provisioner
 data "kubectl_file_documents" "default_provisioner" {
   content = templatefile("../modules/karpenter-cluster-as/karpenter-provisioner.yaml",{
-    cluster_name = var.eks_cluster_name
+    cluster_name = var.cluster_name
   })
 }
 
@@ -152,6 +153,6 @@ resource "kubectl_manifest" "app_of_apps" {
   yaml_body = each.value
   depends_on = [
     module.eks_cluster,
-    module.argo-cd-helm
+    module.argo-cd
   ]
 }

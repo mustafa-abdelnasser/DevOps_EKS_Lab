@@ -45,7 +45,7 @@ output "certificate_arn" {
 # }
 
 output "argo-cd-address" {
-  value = module.argo-cd-helm.argo-cd_ingress_hostname
+  value = module.argo-cd.argo-cd_ingress_hostname
 }
 
 # output "argo-cd-helm" {

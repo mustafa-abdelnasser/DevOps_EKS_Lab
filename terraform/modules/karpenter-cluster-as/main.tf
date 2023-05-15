@@ -101,7 +101,7 @@ resource "aws_iam_policy" "KarpenterControllerPolicy" {
             {
                 "Effect": "Allow",
                 "Action": "iam:PassRole",
-                "Resource": "${aws_iam_role.KarpenterNodeRole.arn}",
+                "Resource": "${var.eks_node_role_arn}",
                 "Sid": "PassNodeIAMRole"
             },
             {
@@ -146,7 +146,7 @@ resource "aws_sqs_queue_policy" "KarpenterInterruptionQueuePolicy" {
 
 ####################
 resource "aws_cloudwatch_event_rule" "ScheduledChangeRule" {
-  name        = "Karpenter ScheduledChangeRule"
+  name        = "KarpenterScheduledChangeRule"
   description = "Karpenter ScheduledChangeRule"
 
   event_pattern = jsonencode({
@@ -163,7 +163,7 @@ resource "aws_cloudwatch_event_target" "ScheduledChangeRule" {
 
 ####################
 resource "aws_cloudwatch_event_rule" "SpotInterruptionRule" {
-  name        = "Karpenter SpotInterruptionRule"
+  name        = "KarpenterSpotInterruptionRule"
   description = "Karpenter SpotInterruptionRule"
 
   event_pattern = jsonencode({
@@ -180,7 +180,7 @@ resource "aws_cloudwatch_event_target" "SpotInterruptionRule" {
 
 ####################
 resource "aws_cloudwatch_event_rule" "RebalanceRule" {
-  name        = "Karpenter RebalanceRule"
+  name        = "KarpenterRebalanceRule"
   description = "Karpenter RebalanceRule"
 
   event_pattern = jsonencode({
@@ -197,7 +197,7 @@ resource "aws_cloudwatch_event_target" "RebalanceRule" {
 
 ####################
 resource "aws_cloudwatch_event_rule" "InstanceStateChangeRule" {
-  name        = "Karpenter InstanceStateChangeRule"
+  name        = "KarpenterInstanceStateChangeRule"
   description = "Karpenter InstanceStateChangeRule"
 
   event_pattern = jsonencode({
