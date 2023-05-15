@@ -85,7 +85,9 @@ resource "aws_eip" "vpc_nat_gw_eip" {
 
 resource "aws_nat_gateway" "vpc_nat_gw" {
     depends_on = [
-      aws_eip.vpc_nat_gw_eip
+      aws_eip.vpc_nat_gw_eip,
+      aws_internet_gateway.vpc_internet_gw,
+      aws_subnet.vpc_public_subnets
     ]
 
     allocation_id = aws_eip.vpc_nat_gw_eip.id
