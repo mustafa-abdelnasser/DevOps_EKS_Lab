@@ -124,7 +124,8 @@ resource "aws_sqs_queue" "KarpenterInterruptionQueue" {
 
 resource "aws_sqs_queue_policy" "KarpenterInterruptionQueuePolicy" {
     queue_url = aws_sqs_queue.KarpenterInterruptionQueue.id
-    policy = jsondecode({
+    policy = <<EOF
+    {
       "Version": "2008-10-17",
       "Id": "EC2InterruptionPolicy",
       "Statement": [
@@ -140,7 +141,8 @@ resource "aws_sqs_queue_policy" "KarpenterInterruptionQueuePolicy" {
             "Resource": "${aws_sqs_queue.KarpenterInterruptionQueue.arn}"
           }
       ]
-    })
+    }
+  EOF
 }
 
 ####################
