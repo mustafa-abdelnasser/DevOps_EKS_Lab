@@ -139,7 +139,7 @@ module "argo-cd" {
    ]
    certificate_arn = module.aws_certificate_manger.certificate_arn
    domain_name = var.domain_name
-   dns_zone_name = var.dns_zone_name
+   #dns_zone_name = var.dns_zone_name
 }
 
 # install argocd app-of-apps
