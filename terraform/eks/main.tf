@@ -7,6 +7,7 @@ locals {
   private_subnets_tags = {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
     "kubernetes.io/role/internal-elb"             = "1"
+    "karpenter.sh/discovery" = var.cluster_name
   }
 }
 
@@ -43,6 +44,7 @@ module "eks_cluster" {
   cluster_version = var.cluster_version
   cluster_node_groups = var.cluster_node_groups
   eks_node_group_pub_key = var.eks_node_group_pub_key
+  eks_cluster_tags = var.eks_cluster_tags
 }
 
 # install kubernetes Metric Server needed for kubectl top and HPA
@@ -76,6 +78,33 @@ module "aws-lb-controller-edns" {
     module.aws_certificate_manger
   ]
   iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
+}
+
+# eks karpenter cluster auto-scaler
+module "karpenter" {
+  source = "../modules/karpenter-cluster-as"
+  depends_on = [
+    module.eks_cluster
+  ]
+  eks_cluster_name = var.cluster_name
+  iam_openid_connect_provider_arn = module.eks_cluster.iam_openid_connect_provider_arn
+  eks_node_role_name = module.eks_cluster.iam_eks_node_role_name
+}
+
+## provisioner
+data "kubectl_file_documents" "default_provisioner" {
+  content = templatefile("../modules/karpenter-cluster-as/karpenter-provisioner.yaml",{
+    cluster_name = var.eks_cluster_name
+  })
+}
+
+resource "kubectl_manifest" "app_of_apps" {
+  for_each  = data.kubectl_file_documents.default_provisioner.manifests
+  yaml_body = each.value
+  depends_on = [
+    module.eks_cluster,
+    module.karpenter
+  ]
 }
 
 

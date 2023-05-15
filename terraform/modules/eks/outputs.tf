@@ -19,6 +19,10 @@ output "iam_eks_node_role_arn" {
   value = aws_iam_role.eks_node_role.arn
 }
 
+output "iam_eks_node_role_name" {
+  value = aws_iam_role.eks_node_role.name
+}
+
 output "iam_openid_connect_provider_arn" {
   value = aws_iam_openid_connect_provider.eks_cluster.arn
 }

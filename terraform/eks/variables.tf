@@ -20,6 +20,13 @@ variable "cluster_name" {
     default = "eks-cluster-01"
 }
 
+variable "eks_cluster_tags" {
+  type = map
+  default = {
+    karpenter.sh/discovery = "eks-cluster-01"
+  }
+}
+
 variable "cluster_version" {
     description = "eks cluster version"
     type = string
@@ -83,21 +90,21 @@ variable "cluster_node_groups" {
         node_group_1 = {
             name = "node_group_01"
             capacity_type = "ON_DEMAND"
-            instance_types = ["t3.medium"]
-            disk_size = 10
-            desired_size = 2
-            max_size = 4
-            min_size = 1
-        }
-        node_group_2 = {
-            name = "node_group_02"
-            capacity_type = "ON_DEMAND"
             instance_types = ["t3.micro"]
             disk_size = 10
             desired_size = 2
             max_size = 4
             min_size = 1
         }
+        # node_group_2 = {
+        #     name = "node_group_02"
+        #     capacity_type = "ON_DEMAND"
+        #     instance_types = ["t3.micro"]
+        #     disk_size = 10
+        #     desired_size = 2
+        #     max_size = 4
+        #     min_size = 1
+        # }
     }
 }
 
@@ -113,3 +120,4 @@ variable "domain_name" {
 variable "eks_node_group_pub_key" {
   type = string
 }
+

@@ -4,6 +4,10 @@ variable "cluster_role_name" {
     default = "EKSClusterRole"
 }
 
+variable "eks_cluster_tags" {
+  type = map
+}
+
 variable "node_role_name" {
     description = "eks Node role name"
     type = string
