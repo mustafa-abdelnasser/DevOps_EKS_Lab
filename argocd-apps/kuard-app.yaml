@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   source:
     path: ./argocd-apps/demo-app-kuard
-    repoURL: https://github.com/mustafa-abdelnasser/FE_CCE_DevOps
+    repoURL: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
     targetRevision: EKS-AWS-ALB-Controller
   project: eks-devops
   syncPolicy:
