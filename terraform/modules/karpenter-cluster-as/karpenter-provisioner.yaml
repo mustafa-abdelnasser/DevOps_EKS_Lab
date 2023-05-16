@@ -21,5 +21,6 @@ metadata:
 spec:
   subnetSelector:
     karpenter.sh/discovery: ${cluster_name}
+    aws:eks:cluster-name: ${cluster_name}
   securityGroupSelector:
-    karpenter.sh/discovery: ${cluster_name}
+    aws:eks:cluster-name:	${cluster_name}

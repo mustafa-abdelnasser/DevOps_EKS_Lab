@@ -8,6 +8,7 @@ locals {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
     "kubernetes.io/role/internal-elb"             = "1"
     "karpenter.sh/discovery" = var.cluster_name
+    "aws:eks:cluster-name" = var.cluster_name
   }
 }
 
