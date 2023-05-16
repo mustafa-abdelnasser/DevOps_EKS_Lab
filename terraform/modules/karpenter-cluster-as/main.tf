@@ -115,6 +115,12 @@ resource "aws_iam_policy" "KarpenterControllerPolicy" {
     })
 }
 
+
+resource "aws_iam_role_policy_attachment" "KarpenterControllerPolicyattach" {
+  role = aws_iam_role.KarpenterControllerRole.name
+  policy_arn = aws_iam_policy.KarpenterControllerPolicy.arn
+}
+
 resource "aws_sqs_queue" "KarpenterInterruptionQueue" {
     name = var.eks_cluster_name
     message_retention_seconds = 300
