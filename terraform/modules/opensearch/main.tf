@@ -14,10 +14,10 @@ data "aws_subnets" "private-subnets" {
   }
 }
 
-data "aws_subnet" "private" {
-  for_each = toset(data.aws_subnets.private-subnets.ids)
-  id       = each.value
-}
+# data "aws_subnet" "private" {
+#   for_each = toset(data.aws_subnets.private-subnets.ids)
+#   id       = each.value
+# }
 
 data "aws_region" "current" {}
 
@@ -150,12 +150,12 @@ resource "aws_opensearch_domain" "cluster" {
     instance_count = var.opensearch_instance_count
     zone_awareness_enabled = true
     zone_awareness_config {
-      availability_zone_count = length(data.aws_subnet.private.*.id)
+      availability_zone_count = length(data.aws_subnets.private-subnets.ids)
     }
   }
   
   vpc_options {
-    subnet_ids = data.aws_subnet.private.*.id
+    subnet_ids = data.aws_subnets.private-subnets.ids
     security_group_ids = [ aws_security_group.opensearch_sg.id ]
   }
   
