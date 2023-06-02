@@ -185,6 +185,10 @@ resource "aws_opensearch_domain" "cluster" {
     log_type                 = "ES_APPLICATION_LOGS"
   }
 
+  node_to_node_encryption {
+    enabled = true
+  }
+
   advanced_security_options {
     enabled = true
     internal_user_database_enabled = true
