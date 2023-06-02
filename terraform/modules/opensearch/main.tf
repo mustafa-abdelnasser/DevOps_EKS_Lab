@@ -3,7 +3,7 @@ data "aws_vpc" "vpc" {
   id = var.vpc_id
 }
 
-data "aws_subnet" "private" {
+data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
     values = [var.vpc_id]
@@ -70,14 +70,25 @@ data "aws_iam_policy_document" "log_policy" {
       "${aws_cloudwatch_log_group.opensearch_es_application_logs.arn}:*"
     ]
 
-    condition = {
-          "StringEquals" = {
-              "aws:SourceAccount": "${data.aws_caller_identity.current.account_id}"
-          },
-          "ArnLike" = {
-              "aws:SourceArn": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.opensearch_domain}"
-          }
-      }
+    condition {
+      test = "ForAnyValue:StringEquals"
+      variable = "aws:SourceAccount"
+      values = [ "${data.aws_caller_identity.current.account_id}" ]
+    }
+
+    condition {
+      test = "ForAnyValue:ArnLike"
+      variable = "aws:SourceArn"
+      values = [ "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.opensearch_domain}" ]
+    }
+    # condition {
+    #       "StringEquals" = {
+    #           "aws:SourceAccount": "${data.aws_caller_identity.current.account_id}"
+    #       },
+    #       "ArnLike" = {
+    #           "aws:SourceArn": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.opensearch_domain}"
+    #       }
+    #   }
   }
 }
 
@@ -134,12 +145,12 @@ resource "aws_opensearch_domain" "cluster" {
     instance_count = var.opensearch_instance_count
     zone_awareness_enabled = true
     zone_awareness_config {
-      availability_zone_count = length(data.aws_subnet_ids.private)
+      availability_zone_count = length(data.aws_subnets.private)
     }
   }
   
   vpc_options {
-    subnet_ids = data.aws_subnet_ids.private
+    subnet_ids = data.aws_subnets.private
     security_group_ids = aws_security_group.opensearch_sg.id
   }
   
