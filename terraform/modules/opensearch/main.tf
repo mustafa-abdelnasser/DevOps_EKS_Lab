@@ -155,7 +155,7 @@ resource "aws_opensearch_domain" "cluster" {
   }
   
   vpc_options {
-    subnet_ids = [ data.aws_subnets.private.ids ]
+    subnet_ids = data.aws_subnet.private.*.id
     security_group_ids = [ aws_security_group.opensearch_sg.id ]
   }
   
