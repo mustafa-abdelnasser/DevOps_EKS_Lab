@@ -34,6 +34,19 @@ module "ec2" {
   ec2_name = "jump_ec2"
 }
 
+# create opensearch domain
+module "opensearch" {
+  source = "../modules/opensearch"
+  depends_on = [ module.eks_networking ]
+  vpc_id = module.eks_networking.vpc_id
+  opensearch_domain = "opensearch-eks"
+  opensearch_engine_version = "OpenSearch_2.5"
+  opensearch_instance_type = "t3.small.search"
+  opensearch_instance_count = 3
+  opensearch_dedicated_master_type = "t3.small.search"
+  opensearch_dedicated_master_count = 3
+}
+
 # create eks cluster and node_groups
 module "eks_cluster" {
   source = "../modules/eks"
@@ -47,6 +60,9 @@ module "eks_cluster" {
   eks_node_group_pub_key = var.eks_node_group_pub_key
   eks_cluster_tags = var.eks_cluster_tags
 }
+
+
+
 
 # install kubernetes Metric Server needed for kubectl top and HPA
 resource "helm_release" "metric-server" {
