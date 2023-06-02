@@ -3,8 +3,11 @@ data "aws_vpc" "vpc" {
   id = var.vpc_id
 }
 
-data "aws_subnet_ids" "private" {
-  vpc_id = var.vpc_id
+data "aws_subnet" "private" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
 
   tags = {
     Name = "*private*"
@@ -67,7 +70,7 @@ data "aws_iam_policy_document" "log_policy" {
       "${aws_cloudwatch_log_group.opensearch_es_application_logs.arn}:*"
     ]
 
-    Condition = {
+    condition = {
           "StringEquals" = {
               "aws:SourceAccount": "${data.aws_caller_identity.current.account_id}"
           },
@@ -119,7 +122,7 @@ resource "aws_iam_service_linked_role" "opensearch" {
 
 resource "aws_opensearch_domain" "cluster" {
   depends_on = [ aws_iam_service_linked_role.opensearch ]
-  
+
   domain_name    = var.opensearch_domain
   engine_version = var.opensearch_engine_version
 
@@ -168,8 +171,8 @@ resource "aws_opensearch_domain" "cluster" {
 
   advanced_security_options {
     enabled = true
+    internal_user_database_enabled = true
     master_user_options {
-      internal_user_database_enabled = true
       master_user_name = "${var.opensearch_domain}-master"
       master_user_password = random_password.password.result
     }
