@@ -3,7 +3,7 @@ data "aws_vpc" "vpc" {
   id = var.vpc_id
 }
 
-data "aws_subnets" "private" {
+data "aws_subnets" "private-subnets" {
   filter {
     name   = "vpc-id"
     values = [var.vpc_id]
@@ -12,6 +12,11 @@ data "aws_subnets" "private" {
   tags = {
     Name = "*private*"
   }
+}
+
+data "aws_subnet" "private" {
+  for_each = toset(data.aws_subnets.private-subnets.ids)
+  id       = each.value
 }
 
 data "aws_region" "current" {}
@@ -145,12 +150,12 @@ resource "aws_opensearch_domain" "cluster" {
     instance_count = var.opensearch_instance_count
     zone_awareness_enabled = true
     zone_awareness_config {
-      availability_zone_count = length(data.aws_subnets.private)
+      availability_zone_count = length(data.aws_subnet.private.*.id)
     }
   }
   
   vpc_options {
-    subnet_ids = [ data.aws_subnets.private ]
+    subnet_ids = [ data.aws_subnets.private.ids ]
     security_group_ids = [ aws_security_group.opensearch_sg.id ]
   }
   
