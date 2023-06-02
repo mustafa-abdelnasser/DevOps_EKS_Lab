@@ -150,8 +150,8 @@ resource "aws_opensearch_domain" "cluster" {
   }
   
   vpc_options {
-    subnet_ids = data.aws_subnets.private
-    security_group_ids = aws_security_group.opensearch_sg.id
+    subnet_ids = [ data.aws_subnets.private ]
+    security_group_ids = [ aws_security_group.opensearch_sg.id ]
   }
   
   encrypt_at_rest {
