@@ -132,12 +132,12 @@ data "aws_iam_policy_document" "access_policy" {
 }
 
 # linked role 
-resource "aws_iam_service_linked_role" "opensearch-linked-role" {
-  aws_service_name = "opensearchservice.amazonaws.com"
-}
+# resource "aws_iam_service_linked_role" "opensearch-linked-role" {
+#   aws_service_name = "opensearchservice.amazonaws.com"
+# }
 
 resource "aws_opensearch_domain" "cluster" {
-  depends_on = [ aws_iam_service_linked_role.opensearch-linked-role ]
+  #depends_on = [ aws_iam_service_linked_role.opensearch-linked-role ]
 
   domain_name    = var.opensearch_domain
   engine_version = var.opensearch_engine_version
