@@ -137,7 +137,7 @@ resource "aws_iam_service_linked_role" "opensearch-linked-role" {
 }
 
 resource "aws_opensearch_domain" "cluster" {
-  depends_on = [ aws_iam_service_linked_role.opensearch ]
+  depends_on = [ aws_iam_service_linked_role.opensearch-linked-role ]
 
   domain_name    = var.opensearch_domain
   engine_version = var.opensearch_engine_version
