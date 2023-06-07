@@ -157,3 +157,31 @@ module "aws_certificate_manger" {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# create client vpn endpoint
+# create certificate
+module "aws_certificate_manger-vpn-endpoint" {
+  # depends_on = [ 
+  #   module.route53_zone
+  #  ]
+  source = "../modules/aws_certificate_manger"
+  # dns_zone_id = module.route53_zone.dns_zone_id
+  dns_zone_id = data.aws_route53_zone.dns_zone.zone_id
+  domain_name = "vpn-endpoint.${var.domain_name}"
+}
+
