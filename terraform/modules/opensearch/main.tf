@@ -192,6 +192,7 @@ resource "aws_opensearch_domain" "cluster" {
   domain_endpoint_options {
     enforce_https = true
     tls_security_policy = "Policy-Min-TLS-1-2-2019-07"
+    #custom_endpoint_enabled  = true
   }
 
   advanced_security_options {
@@ -203,6 +204,10 @@ resource "aws_opensearch_domain" "cluster" {
     }
   }
   
+  advanced_options = {
+    "override_main_response_version" = "true"
+  }
+
   access_policies = data.aws_iam_policy_document.access_policy.json
 
   tags = {
