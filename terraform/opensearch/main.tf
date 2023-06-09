@@ -24,15 +24,15 @@ module "eks_networking" {
 }
 
 # create pubic ec2
-
-
-
-
-
-
-
-
-
+module "ec2" {
+  source = "../modules/simple_ec2"
+  depends_on = [ module.eks_networking ]
+  vpc_id = module.eks_networking.vpc_id
+  subnet_id = module.eks_networking.public_subnet_list[0]
+  ec2_instance_type = "t2.micro"
+  ec2_public_key = var.eks_node_group_pub_key
+  ec2_name = "jump_ec2"
+}
 
 # create opensearch domain
 module "opensearch" {
@@ -175,13 +175,13 @@ module "aws_certificate_manger" {
 
 # create client vpn endpoint
 # create certificate
-module "aws_certificate_manger-vpn-endpoint" {
-  # depends_on = [ 
-  #   module.route53_zone
-  #  ]
-  source = "../modules/aws_certificate_manger"
-  # dns_zone_id = module.route53_zone.dns_zone_id
-  dns_zone_id = data.aws_route53_zone.dns_zone.zone_id
-  domain_name = "vpn-endpoint.${var.domain_name}"
-}
+# module "aws_certificate_manger-vpn-endpoint" {
+#   # depends_on = [ 
+#   #   module.route53_zone
+#   #  ]
+#   source = "../modules/aws_certificate_manger"
+#   # dns_zone_id = module.route53_zone.dns_zone_id
+#   dns_zone_id = data.aws_route53_zone.dns_zone.zone_id
+#   domain_name = "vpn-endpoint.${var.domain_name}"
+# }
 
