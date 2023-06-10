@@ -22,6 +22,7 @@ variable "cluster_name" {
 
 variable "eks_node_role_name" {
   type = string
+  default = "EKSNodeRole"
 }
 
 variable "domain_name" {
