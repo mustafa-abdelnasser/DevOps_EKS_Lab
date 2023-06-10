@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: eks-devops
+  name: eks-cluster-apps
   namespace: argocd
   # Finalizer that ensures that project is not deleted until it is not referenced by any application
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: EKS DevOps Project
+  description: EKS Cluster Apps
   # Allow manifests to deploy from any Git repos
   sourceRepos:
   - https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
@@ -30,7 +30,7 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  project: eks-devops
+  project: eks-cluster-apps
   type: git
   url: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
   # password: my-password
@@ -42,17 +42,17 @@ stringData:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-apps
+  name: cluster-apps
   namespace: argocd
 spec:
   destination:
-    namespace: test-apps
+    namespace: cluster-apps
     server: https://kubernetes.default.svc
   source:
-    path: ./argocd/apps
+    path: ./argocd/cluster-apps
     repoURL: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
     targetRevision: EKS-AWS-ALB-Controller
-  project: eks-devops
+  project: eks-cluster-apps
   syncPolicy:
     automated:
       prune: true

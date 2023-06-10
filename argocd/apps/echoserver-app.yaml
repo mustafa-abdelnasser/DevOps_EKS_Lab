@@ -8,7 +8,7 @@ spec:
     namespace: test-apps
     server: https://kubernetes.default.svc
   source:
-    path: ./argocd-apps/echoserver
+    path: ./argocd/apps/echoserver
     repoURL: https://github.com/mustafa-abdelnasser/DevOps_EKS_Lab
     targetRevision: EKS-AWS-ALB-Controller
   project: eks-devops

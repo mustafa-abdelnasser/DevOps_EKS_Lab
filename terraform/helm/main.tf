@@ -96,3 +96,17 @@ resource "kubectl_manifest" "app_of_apps" {
     module.argo-cd
   ]
 }
+
+# cluster apps
+# install argocd app-of-apps
+data "kubectl_file_documents" "cluster_apps" {
+  content = file("../modules/argo-cd/cluster_apps.yaml")
+}
+
+resource "kubectl_manifest" "cluster_apps" {
+  for_each  = data.kubectl_file_documents.cluster_apps.manifests
+  yaml_body = each.value
+  depends_on = [
+    module.argo-cd
+  ]
+}
