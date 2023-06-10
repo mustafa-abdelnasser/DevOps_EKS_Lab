@@ -54,7 +54,7 @@ module "karpenter" {
   source = "../modules/karpenter-cluster-as"
   eks_cluster_name = var.cluster_name
   iam_openid_connect_provider_arn = data.aws_iam_openid_connect_provider.cluster.arn
-  eks_node_role_name = var.eks_node_role_name
+  eks_node_role_name = "${var.eks_node_role_name}-${var.cluster_name}"
   eks_node_role_arn = data.aws_iam_role.eks_node_role.arn
 }
 
