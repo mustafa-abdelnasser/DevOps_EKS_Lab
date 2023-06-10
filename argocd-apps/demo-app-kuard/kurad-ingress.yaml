@@ -9,7 +9,7 @@ metadata:
     alb.ingress.kubernetes.io/group.name: eks-cluster-apps
     alb.ingress.kubernetes.io/group.order: '11'
     alb.ingress.kubernetes.io/target-type: instance
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:841825461216:certificate/03c4f5c6-e284-4944-a71e-1c764185431a"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:052843388884:certificate/ca4b5860-87f1-451f-aca2-ad046c65093b"
 
 
 spec:
