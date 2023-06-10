@@ -7,6 +7,10 @@ data "aws_eks_cluster_auth" "cluster" {
   name = var.cluster_name
 }
 
+data "aws_iam_openid_connect_provider" "cluster" {
+  url = data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}
+
 # certificate info
 data "aws_acm_certificate" "domain" {
   domain      = "*.${var.domain_name}"
@@ -42,14 +46,14 @@ module "aws-lb-controller-edns" {
   depends_on = [
     module.aws-lb-controller
   ]
-  iam_openid_connect_provider_arn = data.aws_eks_cluster.cluster.iam_openid_connect_provider_arn
+  iam_openid_connect_provider_arn = data.aws_iam_openid_connect_provider.cluster.arn
 }
 
 # eks karpenter cluster auto-scaler
 module "karpenter" {
   source = "../modules/karpenter-cluster-as"
   eks_cluster_name = var.cluster_name
-  iam_openid_connect_provider_arn = data.aws_eks_cluster.cluster.iam_openid_connect_provider_arn
+  iam_openid_connect_provider_arn = data.aws_iam_openid_connect_provider.cluster.arn
   eks_node_role_name = var.eks_node_role_name
   eks_node_role_arn = data.aws_iam_role.eks_node_role.arn
 }
