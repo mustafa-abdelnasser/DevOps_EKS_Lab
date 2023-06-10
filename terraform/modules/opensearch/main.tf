@@ -207,10 +207,10 @@ resource "aws_opensearch_domain" "cluster" {
   advanced_options = {
     "override_main_response_version" = "true"
   }
-
-  auto_tune_options {
-    desired_state = "ENABLED"
-  }
+  # make sure instance type is supported before enabling it 
+  # auto_tune_options {
+  #   desired_state = "ENABLED"
+  # }
 
   access_policies = data.aws_iam_policy_document.access_policy.json
 
