@@ -20,7 +20,7 @@ data "aws_acm_certificate" "domain" {
 
 # eks_node_role
 data "aws_iam_role" "eks_node_role" {
-  name = var.eks_node_role_name
+  name = "${var.eks_node_role_name}-${var.cluster_name}"
 }
 
 # install kubernetes Metric Server needed for kubectl top and HPA
