@@ -39,6 +39,19 @@ stringData:
   # forceHttpBasicAuth: "true"
   # enableLfs: "true"
 ---
+# metric-server repo configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: metric-server-helm-repo
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  project: eks-cluster-apps
+  type: helm
+  url: https://kubernetes-sigs.github.io/metrics-server/
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
