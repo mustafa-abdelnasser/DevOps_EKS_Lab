@@ -37,7 +37,7 @@ resource "helm_release" "metric-server" {
 module "aws-lb-controller" {
   source = "../modules/aws-lb-controller"
   eks_cluster_name = var.cluster_name
-  iam_openid_connect_provider_arn = data.aws_eks_cluster.cluster.iam_openid_connect_provider_arn
+  iam_openid_connect_provider_arn = data.aws_iam_openid_connect_provider.cluster.arn
 }
 
 # external DNS
