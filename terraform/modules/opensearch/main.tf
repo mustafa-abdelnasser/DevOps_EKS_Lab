@@ -208,6 +208,10 @@ resource "aws_opensearch_domain" "cluster" {
     "override_main_response_version" = "true"
   }
 
+  auto_tune_options {
+    desired_state = enabled
+  }
+
   access_policies = data.aws_iam_policy_document.access_policy.json
 
   tags = {
